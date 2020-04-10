@@ -5,5 +5,9 @@ package com.org.vinayapp.utils;
  */
 public class WebConstant {
 
+    public static final String HOST="http://localhost:8080/";
+    public static final String LOGINURL= HOST+" ";
+
+
 
 }
