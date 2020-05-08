@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:paddingTop="100dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:layout_height="match_parent">
+
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_height="25dp"
+        android:id="@+id/spinnerFloor"
+        ></Spinner>
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/spinnerSection"
+        android:layout_marginTop="20dp"
+        />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:id="@+id/spinnerClassRoom"
+        android:layout_marginTop="20dp"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSubmitNext"
+        android:layout_marginTop="30dp"
+        android:textSize="15sp"
+        android:textColor="@color/white"
+        android:background="@color/colorPrimary"
+        android:text="NEXT"
+        />
+
+</LinearLayout>

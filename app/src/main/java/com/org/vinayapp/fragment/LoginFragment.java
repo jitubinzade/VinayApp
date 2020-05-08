@@ -14,8 +14,8 @@ import android.widget.Toast;
 
 import com.org.vinayapp.R;
 import com.org.vinayapp.utils.JSonParser;
+import com.org.vinayapp.utils.SessionManager;
 import com.org.vinayapp.utils.WebConstant;
-
 import org.json.JSONObject;
 
 /**
@@ -23,10 +23,10 @@ import org.json.JSONObject;
  */
 public class LoginFragment extends Fragment {
 
-
     View view;
     EditText edtuer,edtpassword;
     Button btnlogin;
+    SessionManager sessionManager;
 
     @Nullable
     @Override
@@ -36,6 +36,7 @@ public class LoginFragment extends Fragment {
         edtuer= (EditText) view.findViewById(R.id.edtusername);
         edtpassword= (EditText) view.findViewById(R.id.edtpassword);
         btnlogin= (Button) view.findViewById(R.id.btnlogin);
+        sessionManager =new SessionManager(getActivity());
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -44,6 +45,7 @@ public class LoginFragment extends Fragment {
 
                            String userid= edtuer.getText().toString();
                            String password= edtpassword.getText().toString();
+                           //getFragmentManager().beginTransaction().replace(android.R.id.content,new HomeFragment()).commit();
                            new LoginService().execute(userid,password);
                      }
             }
@@ -70,7 +72,7 @@ public class LoginFragment extends Fragment {
     private class LoginService extends AsyncTask<String,Void,JSONObject> {
 
         ProgressDialog progressDialog;
-
+        String userid;
 
         @Override
         protected void onPreExecute() {
@@ -84,8 +86,9 @@ public class LoginFragment extends Fragment {
             JSONObject jsonObject=null;
             try {
                 String userid= strings[0];
+                this.userid=userid;
                 String password= strings[1];
-                jsonObject = JSonParser.invokeLoginService(userid,password, WebConstant.LOGINURL);
+                jsonObject = JSonParser.invokeLoginService(WebConstant.LOGINURL,userid,password);
             }catch (Exception e) {
                 e.printStackTrace();
             }
@@ -94,7 +97,7 @@ public class LoginFragment extends Fragment {
 
         @Override
         protected void onPostExecute(JSONObject jsonObject) {
-
+            progressDialog.dismiss();
             try {
                 if(null!=jsonObject){
 
@@ -102,6 +105,9 @@ public class LoginFragment extends Fragment {
                     if(null!=logonStatus){
 
                         if(logonStatus.equals("Success")){
+                               String role= jsonObject.getString("role");
+                               String userId= jsonObject.getString("userId");
+                               sessionManager.setLoginPreference(userId,role);
                                getFragmentManager().beginTransaction().replace(android.R.id.content,new HomeFragment()).commit();
                         } else {
                             Toast.makeText(getActivity(),"Invalidate Userid/Password",Toast.LENGTH_LONG).show();
