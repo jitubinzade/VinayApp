@@ -2,9 +2,9 @@ package com.org.vinayapp;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.org.vinayapp.fragment.HomeFragment;
 import com.org.vinayapp.fragment.LoginFragment;
