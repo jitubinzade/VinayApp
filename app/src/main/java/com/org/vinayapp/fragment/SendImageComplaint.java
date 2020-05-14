@@ -226,7 +226,6 @@ public class SendImageComplaint extends Fragment {
                 }
             });
             multiPartRequest.addFile("image",path);
-            multiPartRequest.addStringParam("fieType","JPEG"); // added for testing
             Volley.newRequestQueue(getContext()).add(multiPartRequest);
         } catch (Exception exc) {
             exc.printStackTrace();
