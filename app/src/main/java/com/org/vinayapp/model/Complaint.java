@@ -1,9 +1,11 @@
 package com.org.vinayapp.model;
 
+import java.io.Serializable;
+
 /**
  * Created by JITU on 18/04/2020.
  */
-public class Complaint {
+public class Complaint implements Serializable {
 
     private int imageId;
     private String title;
@@ -13,6 +15,33 @@ public class Complaint {
     private int floorId;
     private int sectionId;
     private int classroomId;
+    private String floorName;
+    private String sectionName;
+    private String classroomName;
+
+    public String getFloorName() {
+        return floorName;
+    }
+
+    public void setFloorName(String floorName) {
+        this.floorName = floorName;
+    }
+
+    public String getSectionName() {
+        return sectionName;
+    }
+
+    public void setSectionName(String sectionName) {
+        this.sectionName = sectionName;
+    }
+
+    public String getClassroomName() {
+        return classroomName;
+    }
+
+    public void setClassroomName(String classroomName) {
+        this.classroomName = classroomName;
+    }
 
     public int getFloorId() {
         return floorId;

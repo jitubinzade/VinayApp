@@ -1,6 +1,7 @@
 package com.org.vinayapp.fragment;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -44,6 +46,24 @@ public class ComplaintFragment extends Fragment {
         listView =(ListView) view.findViewById(R.id.listComplaints);
         setHasOptionsMenu(true);
         sessionManager =new SessionManager(getActivity());
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                 Complaint complaint =  (Complaint) parent.getItemAtPosition(position);
+                 /*String imageName= complaint.getImageName();
+                 String floorName= complaint.getFloorName();
+                 String sectionName= complaint.getSectionName();
+                 String classroomName =complaint.getClassroomName();*/
+                 Bundle bundle =new Bundle();
+                 bundle.putSerializable("complaint",complaint);
+                 ViewDetailsFragment viewDetailsFragment =new ViewDetailsFragment();
+                 viewDetailsFragment.setArguments(bundle);
+                 getFragmentManager().beginTransaction().replace(android.R.id.content,viewDetailsFragment).addToBackStack(null).commit();
+            }
+        });
+
         new GetJsonComplaint().execute();
         return view;
     }
@@ -96,10 +116,37 @@ public class ComplaintFragment extends Fragment {
                         JSONObject obj= jsonArray.getJSONObject(i);
                         String description= obj.getString("description");
                         String imageUrl= obj.getString("image");
+                        JSONObject floorObject = obj.getJSONObject("floor");
+                        JSONObject sectionObject = obj.getJSONObject("section");
+                        String classroomId =null;
+                        String classroomName =null;
+                        try {
+                            JSONObject classroomObject = obj.getJSONObject("classroom");
+                             classroomId =classroomObject.getString("classroomId");
+                             classroomName= classroomObject.getString("classroomName");
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                        String sectionId= sectionObject.getString("sectionId");
+                        String sectionName= sectionObject.getString("sectionName");
+
+                        String floorId = floorObject.getString("floorId");
+                        String floorName= floorObject.getString("floorName");
+
                         Complaint complaint= new Complaint();
                         complaint.setDesc(description);
                         complaint.setImageUrl(imageUrl);
                         complaint.setImageName(imageUrl);
+                        complaint.setFloorId(Integer.parseInt(floorId));
+                        complaint.setFloorName(floorName);
+                        complaint.setSectionId(Integer.parseInt(sectionId));
+                        complaint.setSectionName(sectionName);
+                        if(classroomId!=null){
+                            complaint.setClassroomId(Integer.parseInt(classroomId));
+                            complaint.setClassroomName(classroomName);
+                        }else {
+                            complaint.setClassroomId(0);
+                        }
                         complaints.add(complaint);
                     }
                     progressDialog.dismiss();
